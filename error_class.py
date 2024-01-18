@@ -37,3 +37,7 @@ class Error(ABC):
         return np.array([pred-obs for pred,obs in zip(
             self.predictions,
             self.observations)])
+    
+    @staticmethod
+    def standard_deviation(vector):
+        return np.std(vector)
