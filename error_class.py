@@ -16,21 +16,22 @@ class Error(ABC):
     def error(self):
         pass
     
-    @property
+    @abstractproperty
     def uncertainty(self):
         pass
     
-    @property
+    @abstractproperty
     def error_type(self):
         pass
     
-    @property
+    @abstractproperty
     def uncertainty_type(self):
         pass
     
     @property
     def error_summary(self):
-        pass
+        return {self.error_type:self.error,
+                self.uncertainty_type:self.uncertainty}
 
     @property
     def residuals(self):
