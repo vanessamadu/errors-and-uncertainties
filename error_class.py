@@ -1,7 +1,6 @@
 # general error class
-from abc import ABC,abstractproperty
 
-class Error(ABC):
+class Error:
     def __init__(self,error:float,uncertainty:float,error_type:str,uncertainty_type:str):
         self._error_type = error_type
         self._error = error
