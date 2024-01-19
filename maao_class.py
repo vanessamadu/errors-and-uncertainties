@@ -20,3 +20,16 @@ class MAAO(Error):
         'cosine of the angle between each prediction and observation'
         return np.array([np.dot(pred,obs)/(linalg.norm(pred)*linalg.norm(obs)) 
                             for pred,obs in zip(self.predictions,self.observations)])
+    
+    @staticmethod
+    def maao(residuals_arr):
+        return np.mean(np.arccos(residuals_arr))
+    
+    ## Error-inherited properties
+    @property
+    def error_type(self):
+        return "maao"
+    
+    @property
+    def error(self):
+        return __class__.maao(self.residuals)
