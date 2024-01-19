@@ -4,22 +4,18 @@ import numpy as np
 
 class Error(ABC):
 
-    def __init__(self,predictions,observations):
-        self._predictions = predictions
-        self._observations = observations
-    
-    @property
+    @abstractproperty
     def predictions(self):
-        return self._predictions
+        pass
 
-    @property
+    @abstractproperty
     def observations(self):
-        return self._observations
+        pass
     
     @abstractproperty
     def error_type(self):
         pass
-    
+
     @abstractproperty
     def error(self):
         pass
