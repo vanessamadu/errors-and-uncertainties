@@ -3,30 +3,34 @@ from abc import ABC,abstractproperty
 import numpy as np
 
 class Error(ABC):
+
+    def __init__(self,predictions,observations):
+        self._predictions = predictions
+        self._observations = observations
     
-    @abstractproperty
+    @property
     def predictions(self):
-        pass
+        return self._predictions
 
-    @abstractproperty
+    @property
     def observations(self):
-        pass
-
-    @abstractproperty
-    def error(self):
-        pass
-    
-    @abstractproperty
-    def uncertainty(self):
-        pass
+        return self._observations
     
     @abstractproperty
     def error_type(self):
         pass
     
     @abstractproperty
-    def uncertainty_type(self):
+    def error(self):
         pass
+    
+    @property
+    def uncertainty(self):
+        return np.std(self.residuals)
+    
+    @property
+    def uncertainty_type(self):
+        return "std"
     
     @property
     def error_summary(self):
