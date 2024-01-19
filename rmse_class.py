@@ -24,12 +24,6 @@ class RMSE(Error):
     @property
     def error(self):
         return __class__.rmse(self.residuals)
-    @property
-    def uncertainty_type(self):
-        return "std"
-    @property
-    def uncertainty(self):
-        return np.std(self.residuals)
     
 
         
