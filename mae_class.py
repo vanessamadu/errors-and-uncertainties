@@ -1,10 +1,11 @@
 from error_class import Error
 import numpy as np
+from numpy import linalg
 
 class MAE(Error):
     def __init__(self,predictions,observations):
-        self._predictions = predictions
-        self._observations = observations
+        self._predictions = linalg.norm(np.array(predictions),axis=1)
+        self._observations = linalg.norm(np.array(observations),axis=1)
     
     @property
     def predictions(self):
@@ -27,11 +28,3 @@ class MAE(Error):
     @property
     def error(self):
         return __class__.mae(self.residuals)
-    
-    @property
-    def uncertainty_type(self):
-        return "std"
-    
-    @property
-    def uncertainty(self):
-        return np.std(self.residuals)
