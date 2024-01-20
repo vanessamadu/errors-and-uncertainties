@@ -8,6 +8,9 @@ class SEMs:
         self._predictions = np.array(predictions)
         self._observations = np.array(observations)
 
+    #class vairable: error tolerance
+    tol = 10e-6
+
     @property
     def predictions(self):
         return self._predictions
@@ -25,15 +28,15 @@ class SEMs:
 
     @property
     def over_estimate_speed_indices(self):
-        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] > 0],dtype=int)
+        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] > self.tol],dtype=int)
 
     @property
     def under_estimate_speed_indices(self):
-        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] < 0],dtype=int)
+        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] < -self.tol],dtype=int)
     
     @property
     def correct_estimate_speed_indices(self):
-        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] == 0],dtype=int)
+        return np.array([i for i in range(len(self.mae_speed.residuals)) if np.abs(self.mae_speed.residuals[i]) < self.tol],dtype=int)
 
     @property
     def over_under_correct_proportions(self):
