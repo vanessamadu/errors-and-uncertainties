@@ -58,10 +58,9 @@ class SEMs:
         err_metric_names = ["MAE over all Speeds","MAE for Overestimated Speeds", "MAE for Underestimated Speeds"]
         err_summary = {}
         for ii in range(len(err_metrics)):
-            err_summary[f"{err_metric_names[ii]} Error: {err_metrics[ii].error_type}":err_metrics[ii].error]
-            err_summary[f"{err_metric_names[ii]} Uncertainty: {err_metrics[ii].uncertainty_type}"
-                        :err_metrics[ii].uncertainty]
-        err_summary["Proportion of Over/Under/Correct Estimates of Speed":f"{self.over_under_correct_proportions*100}%"]
+            err_summary[f"{err_metric_names[ii]} Error: {err_metrics[ii].error_type}"]=err_metrics[ii].error
+            err_summary[f"{err_metric_names[ii]} Uncertainty: {err_metrics[ii].uncertainty_type}"] = err_metrics[ii].uncertainty
+        err_summary["Proportion of Over/Under/Correct Estimates of Speed"]=f"{self.over_under_correct_proportions*100}%"
         return err_summary
 
 
