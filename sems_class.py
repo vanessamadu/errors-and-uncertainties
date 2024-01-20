@@ -1,6 +1,7 @@
 # Speed Error Metrics Class
 from mae_class import MAE
 import numpy as np
+import pandas as pd
 
 class SEMs:
     def __init__(self,predictions,observations):
@@ -61,7 +62,7 @@ class SEMs:
             err_summary[f"{err_metric_names[ii]} Error: {err_metrics[ii].error_type}"]=err_metrics[ii].error
             err_summary[f"{err_metric_names[ii]} Uncertainty: {err_metrics[ii].uncertainty_type}"] = err_metrics[ii].uncertainty
         err_summary["Proportion of Over/Under/Correct Estimates of Speed"]=f"{self.over_under_correct_proportions*100}%"
-        return err_summary
+        return pd.Series(err_summary)
 
 
     
