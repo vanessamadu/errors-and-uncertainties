@@ -46,3 +46,8 @@ class AOEMS:
                                          __class__.rotation_matrix(
                                              self.maao_all.residuals[ii]),self.maao_all.observations[ii]
                                              ))<self.tol])
+    
+    @property
+    def clockwise_offset_indices(self):
+        return np.array([ii for ii in range(len(self.maao_all.residuals)) if 
+                         ii not in (self.no_offset_indices or self.anti_clockwise_offset_indices)])
