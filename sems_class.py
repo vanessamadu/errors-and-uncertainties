@@ -15,26 +15,25 @@ class SEMs:
     def observations(self):
         return self._observations
     
-    ## split up into over estimated speed, under estimated speed, and correct speed
-
-    @property
-    def over_estimate_speed_indices(self):
-        return np.array([i for i in range(len(self.residuals)) if self.residuals[i] > 0])
-
-    @property
-    def under_estimate_speed_indices(self):
-        return np.array([i for i in range(len(self.residuals)) if self.residuals[i] < 0])
-    
-    @property
-    def correct_estimate_speed_indices(self):
-        return np.array([i for i in range(len(self.residuals)) if self.residuals[i] == 0])
-    
     # speed error metrics
-
     @property
     def mae_speed(self):
         return MAE(self.predictions,self.observations)
     
+    ## split up into over estimated speed, under estimated speed, and correct speed
+
+    @property
+    def over_estimate_speed_indices(self):
+        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] > 0])
+
+    @property
+    def under_estimate_speed_indices(self):
+        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] < 0])
+    
+    @property
+    def correct_estimate_speed_indices(self):
+        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] == 0])
+
     @property
     def over_under_correct_proportions(self):
         return np.array([len(part)/len(self.predictions) for part in 
