@@ -35,7 +35,14 @@ class SEMs:
     def mae_speed(self):
         return MAE(self.predictions,self.observations)
     
+    @property
+    def over_under_correct_proportions(self):
+        return [len(part)/len(self.predictions) for part in 
+                zip(self.over_estimate_speed_indices,
+                    self.under_estimate_speed_indices,
+                    self.correct_estimate_speed_indices)]
 
+    
 
     
     
