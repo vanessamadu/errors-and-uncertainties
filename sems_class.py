@@ -37,9 +37,9 @@ class SEMs:
     @property
     def over_under_correct_proportions(self):
         return np.array([len(part)/len(self.predictions) for part in 
-                zip(self.over_estimate_speed_indices,
+                [self.over_estimate_speed_indices,
                     self.under_estimate_speed_indices,
-                    self.correct_estimate_speed_indices)])
+                    self.correct_estimate_speed_indices]])
 
     @property
     def ma_overestimated_e(self):
