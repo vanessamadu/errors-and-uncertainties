@@ -1,6 +1,7 @@
 # general error class
 from abc import ABC,abstractproperty
 import numpy as np
+import pandas as pd
 
 class Error(ABC):
 
@@ -30,8 +31,8 @@ class Error(ABC):
     
     @property
     def error_summary(self):
-        return {self.error_type:self.error,
-                self.uncertainty_type:self.uncertainty}
+        return pd.Series({self.error_type:self.error,
+                self.uncertainty_type:self.uncertainty})
 
     @property
     def residuals(self):
