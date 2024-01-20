@@ -25,15 +25,15 @@ class SEMs:
 
     @property
     def over_estimate_speed_indices(self):
-        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] > 0])
+        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] > 0],dtype=int)
 
     @property
     def under_estimate_speed_indices(self):
-        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] < 0])
+        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] < 0],dtype=int)
     
     @property
     def correct_estimate_speed_indices(self):
-        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] == 0])
+        return np.array([i for i in range(len(self.mae_speed.residuals)) if self.mae_speed.residuals[i] == 0],dtype=int)
 
     @property
     def over_under_correct_proportions(self):
