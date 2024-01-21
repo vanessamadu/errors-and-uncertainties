@@ -31,7 +31,7 @@ class MAAO(Error):
     @property
     def defined_residual_indices(self):
         return np.array([ii for ii in range(len(self.residuals)) 
-                         if self.residuals[ii] is not 'undefined'])
+                         if self.residuals[ii] != 'undefined'])
     
     @staticmethod
     def maao(defined_residuals):
