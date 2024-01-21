@@ -41,46 +41,23 @@ class SBRModel(Model):
 
     @property
     def predictions(self):
-        return [__class__.sbr(lon,lat,self.f0) for lon,lat in np.array(self.data[["lon","lat"]])]
+        return np.array([__class__.sbr(lon,lat,self.f0) for lon,lat in np.array(self.data[["lon","lat"]])])
     
-
 class FixedCurrentModel(Model):
     '''benchmark model: predicts all drifter velocities to be the average velocity across the 
        drifter data'''
-    
-    def __init__(self, loss_type:str,uncertainty_type:str,training_data,test_data):
-        super().__init__(loss_type,uncertainty_type,training_data,test_data)
-        self.model_type = "fixedcurrent"
-        self.av_drifter_velocity = None
-    
-    #------------------------ model constructions -------------------------#
+  
     @staticmethod
     def fixedcurrent(lon:float,lat:float,current):
         __class__.check_coordinates(lon,lat)
         return current
-    
-    #----------------------- 'immutable' properties -----------------------#
+
     @property
     def av_drifter_velocity(self):
-        return self._av_drifter_velocity
-    
-    @av_drifter_velocity.setter
-    def av_drifter_velocity(self,val):
-        if val is None:
-            self._av_drifter_velocity = np.mean(np.array(self.training_data[["u","v"]]),axis=0)
-        else:
-            self._av_drifter_velocity = val
-            
-    @property
-    def model_function(self):
-        return self.fixedcurrent
+        return np.mean(np.array(self.data[["u","v"]]),axis=0)
     
     @property
-    def trained_prediction(self):
-        return [self.model_function(lon,lat,self.av_drifter_velocity)\
-                 for lon,lat in np.array(self.training_data[["lon","lat"]])]
-    
-    @property
-    def testing_prediction(self):
-        return [self.model_function(lon,lat,self.av_drifter_velocity)\
-                 for lon,lat in np.array(self.training_data[["lon","lat"]])]
+    def predictions(self):
+        return np.array([self.__class__.fixedcurrent(lon,lat,self.av_drifter_velocity)
+                         for lon,lat in np.array(self.data[["lon","lat"]])])
+
