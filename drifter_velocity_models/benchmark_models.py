@@ -46,6 +46,9 @@ class SBRModel(Model):
 class FixedCurrentModel(Model):
     '''benchmark model: predicts all drifter velocities to be the average velocity across the 
        drifter data'''
+    def __init__(self, data):
+        super().__init__(data)
+        self.av_drifter_velocity = None
   
     @staticmethod
     def fixedcurrent(lon:float,lat:float,current):
@@ -54,8 +57,16 @@ class FixedCurrentModel(Model):
 
     @property
     def av_drifter_velocity(self):
-        return np.mean(np.array(self.data[["u","v"]]),axis=0)
+        return self._av_drifter_velocity
     
+    @av_drifter_velocity.setter
+    def av_drifter_velocity(self,val):
+        if val is None:
+            self._av_drifter_velocity = np.mean(np.array(self.data[["u","v"]]),axis=0)
+        else:
+            self._av_drifter_velocity = val
+
+
     @property
     def predictions(self):
         return np.array([__class__.fixedcurrent(lon,lat,self.av_drifter_velocity)
