@@ -20,7 +20,7 @@ class MAAO(Error):
         'cosine of the angle between each prediction and observation'
         residuals_arr = np.zeros(len(self.predictions))
         for ii in range(len(residuals_arr)):
-            if (self.predictions[ii] == np.zeros(2)).all() or (self.observations[ii]==np.zeros(2)).all():
+            if (self.predictions[ii] == 0).all() or (self.observations[ii]==0).all():
                 residuals_arr[ii] = 'undefined'
             else:
                 obs = self.observations[ii]
@@ -30,7 +30,11 @@ class MAAO(Error):
     
     @staticmethod
     def maao(residuals_arr):
-        return np.mean(np.arccos(residuals_arr))
+        # mean absolute angle offset over all residuals that are defined
+        defined_residuals = np.array([residual for residual in residuals_arr if residual is not 'undefined'])
+        if len(defined_residuals) == 0:
+            return 'undefined'
+        return np.mean(np.arccos(defined_residuals))
 
     ## Error-inherited properties
     @property
@@ -40,4 +44,5 @@ class MAAO(Error):
     @property
     def error(self):
         return __class__.maao(self.residuals)
+    
     
