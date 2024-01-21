@@ -29,8 +29,9 @@ class MAAO(Error):
         return residuals_arr
     
     @property
-    def defined_residuals(self):
-        return np.array([residual for residual in self.residuals if residual is not 'undefined'])
+    def defined_residual_indices(self):
+        return np.array([ii for ii in range(len(self.residuals)) 
+                         if self.residuals[ii] is not 'undefined'])
     
     @staticmethod
     def maao(defined_residuals):
@@ -46,6 +47,6 @@ class MAAO(Error):
     
     @property
     def error(self):
-        return __class__.maao(self.residuals)
+        return __class__.maao(self.residuals[self.defined_residual_indices])
     
     
