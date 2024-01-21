@@ -17,6 +17,8 @@ class MAE(Error):
     
     @staticmethod
     def mae(residuals_arr):
+        if len(residuals_arr) == 0:
+            return float('NaN')
         return np.mean(np.abs(residuals_arr))
     
     ## Error-inherited properties

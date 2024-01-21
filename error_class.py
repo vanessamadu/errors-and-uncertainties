@@ -23,6 +23,8 @@ class Error(ABC):
     
     @property
     def uncertainty(self):
+        if len(self.residuals) ==0:
+            return float('NaN')
         return np.std(self.residuals)
     
     @property

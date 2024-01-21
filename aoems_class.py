@@ -8,9 +8,6 @@ class AOEMs:
     def __init__(self,predictions,observations):
         self._predictions = np.array(predictions)
         self._observations = np.array(observations)
-    
-    # class variable: error tolerance
-    tol = 10e-5
 
     @property
     def predictions(self):
@@ -73,7 +70,7 @@ class AOEMs:
                 [self.anti_clockwise_offset_indices,
                     self.clockwise_offset_indices,
                     self.no_offset_indices,
-                    100-self.maao_all.defined_residual_indices]])
+                    np.ones(100-len(self.maao_all.defined_residual_indices))]])
     
     @property
     def maao_anticlockwise(self):
@@ -86,13 +83,23 @@ class AOEMs:
                     self.observations[self.clockwise_offset_indices])
     
     ## Error-inherited property overwrites
+    
     @property
     def error_summary(self):
         err_metrics = [self.maao_all,self.maao_anticlockwise,self.maao_clockwise]
         err_metric_names = ["MAAO over all Angle Offsets","MAAO for Anticlockwise Offsets", "MAAO for Clockwise Offsets"]
         err_summary = {}
         for ii in range(len(err_metrics)):
-            err_summary[f"{err_metric_names[ii]} Error: {err_metrics[ii].error_type}"]=f"{np.rad2deg(err_metrics[ii].error)} degrees"
-            err_summary[f"{err_metric_names[ii]} Uncertainty: {err_metrics[ii].uncertainty_type}"] = f"{np.rad2deg(err_metrics[ii].uncertainty)} degrees"
-        err_summary["Proportion of Anticlockwise/Clockwise/No,Undefined Angle Offset"]=f"{self.clockwise_anticlockwise_no_undefined_proportions*100}%"
+            if (err_metrics[ii].error) == 'undefined':
+                err = 'undefined'
+            else:
+                err = np.rad2deg(err_metrics[ii].error)
+            if err_metrics[ii].uncertainty == 'undefined':
+                uncert = 'undefined'
+            else:
+                uncert = np.rad2deg(err_metrics[ii].uncertainty)
+
+            err_summary[f"{err_metric_names[ii]} Error: {err_metrics[ii].error_type}"]=f"{err} degrees"
+            err_summary[f"{err_metric_names[ii]} Uncertainty: {err_metrics[ii].uncertainty_type}"] = f"{uncert} degrees"
+        err_summary["Proportion of Anticlockwise/Clockwise/No/Undefined Angle Offset"]=f"{self.clockwise_anticlockwise_no_undefined_proportions*100}%"
         return pd.Series(err_summary)
