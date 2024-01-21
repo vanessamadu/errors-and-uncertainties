@@ -32,8 +32,6 @@ class AOEMs:
     
     @staticmethod
     def unit_vector(vector):
-        if linalg.norm(vector) == 0:
-            return vector
         return vector/linalg.norm(vector)
     
     # angle offset error metrics
