@@ -3,11 +3,7 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%% SET UP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 ##### import packages #####
 import numpy as np
-import pandas as pd
 from abc import ABC, abstractproperty
-
-##### load data #####
-data = pd.read_hdf("ocean_data.h5")
 
 class Model(ABC):
     '''
@@ -40,7 +36,7 @@ class Model(ABC):
         return np.array(self.data[["u","v"]])
     
     @abstractproperty
-    def prediction(self):
+    def predictions(self):
         pass
 
     
