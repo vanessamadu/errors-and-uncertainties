@@ -73,7 +73,7 @@ class AOEMs:
                 [self.anti_clockwise_offset_indices,
                     self.clockwise_offset_indices,
                     self.no_offset_indices,
-                    self.maao_all.defined_residual_indices]])
+                    100-self.maao_all.defined_residual_indices]])
     
     @property
     def maao_anticlockwise(self):
