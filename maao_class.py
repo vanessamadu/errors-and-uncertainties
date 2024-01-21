@@ -28,10 +28,13 @@ class MAAO(Error):
                 residuals_arr[ii] = np.dot(pred,obs)/(linalg.norm(pred)*linalg.norm(obs))
         return residuals_arr
     
+    @property
+    def defined_residuals(self):
+        return np.array([residual for residual in self.residuals if residual is not 'undefined'])
+    
     @staticmethod
-    def maao(residuals_arr):
+    def maao(defined_residuals):
         # mean absolute angle offset over all residuals that are defined
-        defined_residuals = np.array([residual for residual in residuals_arr if residual is not 'undefined'])
         if len(defined_residuals) == 0:
             return 'undefined'
         return np.mean(np.arccos(defined_residuals))
