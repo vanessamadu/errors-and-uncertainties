@@ -20,13 +20,12 @@ class MAAO(Error):
         'cosine of the angle between each prediction and observation'
         residuals_arr = np.zeros(len(self.predictions))
         for ii in range(len(residuals_arr)):
-            if (self.predictions[ii] == np.zeros(2)).all() and (self.observations[ii]==np.zeros(2)).all():
-                pred = np.ones(2)
-                obs = np.ones(2)
+            if (self.predictions[ii] == np.zeros(2)).all() or (self.observations[ii]==np.zeros(2)).all():
+                residuals_arr[ii] = 'undefined'
             else:
                 obs = self.observations[ii]
                 pred = self.predictions[ii]
-            residuals_arr[ii] = np.dot(pred,obs)/(linalg.norm(pred)*linalg.norm(obs))
+                residuals_arr[ii] = np.dot(pred,obs)/(linalg.norm(pred)*linalg.norm(obs))
         return residuals_arr
     
     @staticmethod
