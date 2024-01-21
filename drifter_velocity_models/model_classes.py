@@ -37,7 +37,7 @@ class Model(ABC):
     
     @property
     def observations(self):
-        return self.data["u","v"]
+        return np.array(self.data[["u","v"]])
     
     @abstractproperty
     def prediction(self):
