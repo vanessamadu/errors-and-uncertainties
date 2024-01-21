@@ -44,11 +44,12 @@ class AOEMs:
 
     @property
     def no_offset_indices(self):
-        return np.array([ii for ii in range(len(self.maao_all.residuals)) if np.isclose(1,self.maao_all.residuals[ii])])
+        return np.array([ii for ii in self.maao_all.defined_residual_indices
+                          if np.isclose(1,self.maao_all.residuals[ii])])
     
     @property
     def anti_clockwise_offset_indices(self):
-        return np.array([ii for ii in range(len(self.maao_all.residuals)) if 
+        return np.array([ii for ii in self.maao_all.defined_residual_indices if 
                          (np.allclose(__class__.unit_vector(self.maao_all.predictions[ii]), 
                                      np.matmul(
                                          __class__.anti_clockwise_rotation_matrix(
@@ -58,7 +59,7 @@ class AOEMs:
     
     @property
     def clockwise_offset_indices(self):
-        return np.array([ii for ii in range(len(self.maao_all.residuals)) if 
+        return np.array([ii for ii in self.maao_all.defined_residual_indices if 
                          (np.allclose(__class__.unit_vector(self.maao_all.predictions[ii]), 
                                      np.matmul(
                                          __class__.clockwise_rotation_matrix(
@@ -67,11 +68,12 @@ class AOEMs:
                                              and not np.isclose(1,self.maao_all.residuals[ii]))],dtype=int)
     
     @property
-    def clockwise_anticlockwise_no_proportions(self):
+    def clockwise_anticlockwise_no_undefined_proportions(self):
         return np.array([len(part)/len(self.predictions) for part in 
                 [self.anti_clockwise_offset_indices,
                     self.clockwise_offset_indices,
-                    self.no_offset_indices]])
+                    self.no_offset_indices,
+                    self.maao_all.defined_residual_indices]])
     
     @property
     def maao_anticlockwise(self):
@@ -92,5 +94,5 @@ class AOEMs:
         for ii in range(len(err_metrics)):
             err_summary[f"{err_metric_names[ii]} Error: {err_metrics[ii].error_type}"]=f"{np.rad2deg(err_metrics[ii].error)} degrees"
             err_summary[f"{err_metric_names[ii]} Uncertainty: {err_metrics[ii].uncertainty_type}"] = f"{np.rad2deg(err_metrics[ii].uncertainty)} degrees"
-        err_summary["Proportion of Anticlockwise/Clockwise/No Angle Offset"]=f"{self.clockwise_anticlockwise_no_proportions*100}%"
+        err_summary["Proportion of Anticlockwise/Clockwise/No,Undefined Angle Offset"]=f"{self.clockwise_anticlockwise_no_undefined_proportions*100}%"
         return pd.Series(err_summary)
