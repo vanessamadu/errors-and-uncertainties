@@ -3,16 +3,13 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%% SET UP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 ##### import packages #####
 import numpy as np
-from numpy import linalg
 import pandas as pd
-import math
-from typing import List
-
+from abc import ABC, abstractproperty
 
 ##### load data #####
 data = pd.read_hdf("ocean_data.h5")
 
-class Model:
+class Model(ABC):
     '''
     this class will be the parent class of all ocean models that we will be using
     and it will define attributes and methods common to all specific model classes.
@@ -37,6 +34,16 @@ class Model:
     @property
     def data(self):
         return self._data
+    
+    @property
+    def observations(self):
+        return self.data["u","v"]
+    
+    @abstractproperty
+    def prediction(self):
+        pass
+
+    
 
 
 
