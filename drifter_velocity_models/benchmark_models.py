@@ -1,4 +1,4 @@
-from model_classes import Model
+from drifter_velocity_models.model_class import Model
 # import packages
 import numpy as np
 
@@ -58,6 +58,6 @@ class FixedCurrentModel(Model):
     
     @property
     def predictions(self):
-        return np.array([self.__class__.fixedcurrent(lon,lat,self.av_drifter_velocity)
+        return np.array([__class__.fixedcurrent(lon,lat,self.av_drifter_velocity)
                          for lon,lat in np.array(self.data[["lon","lat"]])])
 
