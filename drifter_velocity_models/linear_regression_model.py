@@ -36,7 +36,7 @@ class LinearRegressionModel(Model):
         self.param_estimate= lstsq_estimate[0]
 
     @property
-    def trained_prediction(self):
+    def predictions(self):
         ' return prediction for each vector of covariates for seen data'
         if self.param_estimate is None:
             self.calculate_param_estimate()
