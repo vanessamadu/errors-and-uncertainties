@@ -30,8 +30,8 @@ class MAAO(Error):
     
     @property
     def defined_residual_indices(self):
-        return np.nonzero(self.residuals != 'undefined')
-    
+        return np.nonzero(np.array(self.residuals) != 'undefined')
+
     @staticmethod
     def maao(defined_residuals):
         # mean absolute angle offset over all residuals that are defined
