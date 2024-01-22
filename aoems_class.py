@@ -41,27 +41,20 @@ class AOEMs:
 
     @property
     def no_offset_indices(self):
-        return np.nonzero(np.isclose(1,self.maao_all.residuals))
+        return np.nonzero(np.isclose(1,self.maao_all.residuals))[0]
     
     @property
     def anti_clockwise_offset_indices(self):
-        return np.array([ii for ii in self.maao_all.defined_residual_indices if 
-                         (np.allclose(__class__.unit_vector(self.maao_all.predictions[ii]), 
-                                     np.matmul(
-                                         __class__.anti_clockwise_rotation_matrix(
-                                             self.maao_all.residuals[ii]),__class__.unit_vector(self.maao_all.observations[ii]).T
-                                             ))
-                                             and not np.isclose(1,self.maao_all.residuals[ii]))],dtype=int)
+        remaining_indices = np.setdiff1d(range(len(self.predictions)),self.no_offset_indices)
+        return np.array([ii for ii in remaining_indices if 
+                         (np.allclose(
+                             __class__.unit_vector(self.maao_all.predictions[ii]), 
+                                     np.matmul(__class__.anti_clockwise_rotation_matrix(self.maao_all.residuals[ii]),__class__.unit_vector(self.maao_all.observations[ii]).T))
+                                            )],dtype=int)
     
     @property
     def clockwise_offset_indices(self):
-        return np.array([ii for ii in self.maao_all.defined_residual_indices if 
-                         (np.allclose(__class__.unit_vector(self.maao_all.predictions[ii]), 
-                                     np.matmul(
-                                         __class__.clockwise_rotation_matrix(
-                                             self.maao_all.residuals[ii]),__class__.unit_vector(self.maao_all.observations[ii]).T
-                                             ))
-                                             and not np.isclose(1,self.maao_all.residuals[ii]))],dtype=int)
+        return np.setdiff1d(range(len(self.predictions)),np.concatenate((self.no_offset_indices,self.anti_clockwise_offset_indices)))
     
     @property
     def clockwise_anticlockwise_no_undefined_proportions(self):
