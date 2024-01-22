@@ -30,7 +30,7 @@ class MAAO(Error):
     
     @property
     def defined_residual_indices(self):
-        return np.nonzero(self.residuals != None)
+        return np.nonzero(self.residuals != None)[0]
 
     @staticmethod
     def maao(defined_residuals):
