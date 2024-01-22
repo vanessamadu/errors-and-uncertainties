@@ -21,7 +21,7 @@ class MAAO(Error):
         residuals_arr = list(np.zeros(len(self.predictions)))
         for ii in range(len(residuals_arr)):
             if (self.predictions[ii] == np.zeros(2)).all() or (self.observations[ii]==np.zeros(2)).all():
-                residuals_arr[ii] = 'undefined'
+                residuals_arr[ii] = None
             else:
                 obs = self.observations[ii]
                 pred = self.predictions[ii]
@@ -30,12 +30,12 @@ class MAAO(Error):
     
     @property
     def defined_residual_indices(self):
-        return np.nonzero(np.array(self.residuals) != 'undefined')
+        return np.nonzero(self.residuals != None)
 
     @staticmethod
     def maao(defined_residuals):
         # mean absolute angle offset over all residuals that are defined
-        if defined_residuals.all() == 'undefined':
+        if defined_residuals.all() == None:
             return 'undefined'
         elif len(defined_residuals) == 0:
             return float('NaN')
@@ -52,7 +52,7 @@ class MAAO(Error):
     
     @property
     def uncertainty(self):
-        if self.residuals[self.defined_residual_indices].all()=='undefined':
+        if self.residuals[self.defined_residual_indices].all()==None:
             return 'undefined'
         elif len(self.residuals[self.defined_residual_indices]) == 0:
             return float('NaN') 
