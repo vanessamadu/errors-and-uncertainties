@@ -41,8 +41,7 @@ class AOEMs:
 
     @property
     def no_offset_indices(self):
-        return np.array([ii for ii in self.maao_all.defined_residual_indices
-                          if np.isclose(1,self.maao_all.residuals[ii])])
+        return np.nonzero(np.isclose(1,self.maao_all.residuals))
     
     @property
     def anti_clockwise_offset_indices(self):
@@ -70,7 +69,7 @@ class AOEMs:
                 [self.anti_clockwise_offset_indices,
                     self.clockwise_offset_indices,
                     self.no_offset_indices,
-                    np.ones(100-len(self.maao_all.defined_residual_indices))]])
+                    np.ones(len(self.predictions)-len(self.maao_all.defined_residual_indices))]])
     
     @property
     def maao_anticlockwise(self):
