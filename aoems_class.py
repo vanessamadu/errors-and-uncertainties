@@ -23,10 +23,6 @@ class AOEMs:
         sine_angle = np.sqrt(1-residual**2)
         return np.array([[residual, -sine_angle],[sine_angle,residual]])
     
-    def clockwise_rotation_matrix(residual):
-        sine_angle = np.sqrt(1-residual**2)
-        return np.array([[residual, sine_angle],[-sine_angle,residual]])
-    
     @staticmethod
     def unit_vector(vector):
         return vector/linalg.norm(vector)
@@ -47,7 +43,7 @@ class AOEMs:
     
     @property
     def anti_clockwise_offset_indices(self):
-        remaining_indices = np.setdiff1d(range(len(self.predictions)),self.no_offset_indices)
+        remaining_indices = np.setdiff1d(self.maao_all.defined_residual_indices,self.no_offset_indices)
         return np.array([ii for ii in remaining_indices if 
                          (np.allclose(
                              __class__.unit_vector(self.maao_all.predictions[ii]), 
@@ -56,7 +52,7 @@ class AOEMs:
     
     @property
     def clockwise_offset_indices(self):
-        return np.setdiff1d(range(len(self.predictions)),np.concatenate((self.no_offset_indices,self.anti_clockwise_offset_indices)))
+        return np.setdiff1d(self.maao_all.defined_residual_indices,np.concatenate((self.no_offset_indices,self.anti_clockwise_offset_indices)))
     
     @property
     def clockwise_anticlockwise_no_undefined_proportions(self):
