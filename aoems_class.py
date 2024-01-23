@@ -59,11 +59,11 @@ class AOEMs:
     
     @property
     def clockwise_anticlockwise_no_undefined_proportions(self):
-        undefined_indices_placeholder = np.setdiff1d(range(len(self.predictions)),self.maao_all.defined_residual_indices)
+        undefined_indices = np.setdiff1d(range(len(self.predictions)),self.maao_all.defined_residual_indices)
         return np.array(list(map(len,[self.anti_clockwise_offset_indices,
                     self.clockwise_offset_indices,
                     self.no_offset_indices,
-                    undefined_indices_placeholder
+                    undefined_indices
                     ])))/len(self.predictions)
     
     @property
