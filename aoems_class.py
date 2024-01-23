@@ -19,11 +19,11 @@ class AOEMs:
     
     @staticmethod
     def unit_vector(vector):
-        return np.divide(vector/linalg.norm(vector, axis =1).reshape(-1,1))
+        return np.divide(vector,linalg.norm(vector, axis =1).reshape(-1,1))
     
     @staticmethod
     def unit_complex_conversion(vector):
-        return __class__.unit_vector(vector).view(np.complex).squeeze()
+        return __class__.unit_vector(vector).view(complex).squeeze()
     
     # angle offset error metrics
 
@@ -41,14 +41,14 @@ class AOEMs:
     def no_offset_indices(self):
         if len(self.maao_all.residuals[self.maao_all.defined_residual_indices]) == 0:
             return np.array([])
-        return np.nonzero(np.isclose(1,self.maao_all.residuals[self.maao_all.defined_residual_indices])).squeeze()
+        return np.nonzero(np.isclose(1,self.maao_all.residuals[self.maao_all.defined_residual_indices]))[0]
     
     @property
     def anti_clockwise_offset_indices(self):
         remaining_indices = np.setdiff1d(self.maao_all.defined_residual_indices,self.no_offset_indices)
         complex_pred = __class__.unit_complex_conversion(self.maao_all.predictions[remaining_indices])
-        transformed_complex_obs = np.dot(self.anti_clockwise_rotations[remaining_indices],__class__.unit_complex_conversion(self.maao_all.observations[remaining_indices]))
-        return np.nonzero(complex_pred == transformed_complex_obs)
+        transformed_complex_obs = np.multiply(self.anti_clockwise_rotations[remaining_indices],__class__.unit_complex_conversion(self.maao_all.observations[remaining_indices]))
+        return np.nonzero(np.isclose(complex_pred,transformed_complex_obs))
     
     @property
     def clockwise_offset_indices(self):
