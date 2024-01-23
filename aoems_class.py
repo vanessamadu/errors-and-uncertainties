@@ -33,14 +33,14 @@ class AOEMs:
     
     @property
     def anti_clockwise_rotations(self):
-        return np.exp(1j*self.maao_all.residuals)
+        return np.exp(1j*self.maao_all.residuals[self.maao_all.defined_residual_indices])
     
     ## split up into anti-clockwise offset, clockwise offset, no offset
 
     @property
     def no_offset_indices(self):
         if len(self.maao_all.residuals[self.maao_all.defined_residual_indices]) == 0:
-            return np.array([])
+            return np.array([],dtype=int)
         return np.nonzero(np.isclose(0,self.maao_all.residuals[self.maao_all.defined_residual_indices]))[0]
     
     @property
@@ -48,6 +48,8 @@ class AOEMs:
         remaining_indices = np.setdiff1d(self.maao_all.defined_residual_indices,self.no_offset_indices)
         complex_pred = __class__.unit_complex_conversion(self.maao_all.predictions[remaining_indices])
         transformed_complex_obs = np.multiply(self.anti_clockwise_rotations[remaining_indices],__class__.unit_complex_conversion(self.maao_all.observations[remaining_indices]))
+        if len(complex_pred) == 0:
+            return np.array([],dtype=int)
         return np.nonzero(np.isclose(complex_pred,transformed_complex_obs))[0]
     
     @property
