@@ -39,7 +39,7 @@ class MAAO(Error):
             return 'undefined'
         elif len(defined_residuals) == 0:
             return float('NaN')
-        return np.mean(np.arccos(defined_residuals))
+        return np.mean(defined_residuals)
 
     ## Error-inherited properties
     @property
