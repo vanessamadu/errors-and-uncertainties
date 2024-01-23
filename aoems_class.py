@@ -18,20 +18,22 @@ class AOEMs:
         return self._observations
     
     @staticmethod
-
-    def anti_clockwise_rotation_matrix(residual):
-        sine_angle = np.sqrt(1-residual**2)
-        return np.array([[residual, -sine_angle],[sine_angle,residual]])
+    def unit_vector(vector):
+        return np.divide(vector/linalg.norm(vector, axis =1).reshape(-1,1))
     
     @staticmethod
-    def unit_vector(vector):
-        return vector/linalg.norm(vector)
+    def unit_complex_conversion(vector):
+        return __class__.unit_vector(vector).view(np.complex).squeeze()
     
     # angle offset error metrics
 
     @property
     def maao_all(self):
         return MAAO(self.predictions,self.observations)
+    
+    @property
+    def anti_clockwise_rotations(self):
+        return np.exp(1j*self.maao_all.residuals)
     
     ## split up into anti-clockwise offset, clockwise offset, no offset
 
