@@ -47,7 +47,8 @@ class AOEMs:
     def anti_clockwise_offset_indices(self):
         remaining_indices = np.setdiff1d(self.maao_all.defined_residual_indices,self.no_offset_indices)
         complex_pred = __class__.unit_complex_conversion(self.maao_all.predictions[remaining_indices])
-        transformed_complex_obs = np.multiply(self.anti_clockwise_rotations[remaining_indices],__class__.unit_complex_conversion(self.maao_all.observations[remaining_indices]))
+        transformed_complex_obs = np.multiply(self.anti_clockwise_rotations[remaining_indices],
+                                              __class__.unit_complex_conversion(self.maao_all.observations[remaining_indices]))
         if len(complex_pred) == 0:
             return np.array([],dtype=int)
         return np.nonzero(np.isclose(complex_pred,transformed_complex_obs))[0]
@@ -58,7 +59,7 @@ class AOEMs:
     
     @property
     def clockwise_anticlockwise_no_undefined_proportions(self):
-        undefined_indices_placeholder = np.ones(len(self.predictions)-len(self.maao_all.defined_residual_indices))
+        undefined_indices_placeholder = np.setdiff1d(range(len(self.predictions)),self.maao_all.defined_residual_indices)
         return np.array(list(map(len,[self.anti_clockwise_offset_indices,
                     self.clockwise_offset_indices,
                     self.no_offset_indices,
