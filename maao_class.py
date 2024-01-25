@@ -17,7 +17,7 @@ class MAAO(Error):
     
     @property
     def residuals(self):
-        'cosine of the angle between each prediction and observation'
+        'angle between each prediction and observation'
         residuals_arr = list(np.zeros(len(self.predictions)))
         for ii in range(len(residuals_arr)):
             if (self.predictions[ii] == np.zeros(2)).all() or (self.observations[ii]==np.zeros(2)).all():
@@ -25,7 +25,7 @@ class MAAO(Error):
             else:
                 obs = self.observations[ii]
                 pred = self.predictions[ii]
-                residuals_arr[ii] = np.dot(pred,obs)/(linalg.norm(pred)*linalg.norm(obs))
+                residuals_arr[ii] = np.arccos(np.dot(pred,obs)/(linalg.norm(pred)*linalg.norm(obs)))
         return np.array(residuals_arr)
     
     @property
@@ -39,7 +39,7 @@ class MAAO(Error):
             return 'undefined'
         elif len(defined_residuals) == 0:
             return float('NaN')
-        return np.mean(np.arccos(defined_residuals))
+        return np.mean(defined_residuals)
 
     ## Error-inherited properties
     @property
