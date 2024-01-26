@@ -45,7 +45,10 @@ def results_row(model_type,model):
                   }
     return result_row
 
-print(results_row("LR",model))
+name = "L1.txt"
+f = open(name,"w")
+f.write(f'{results_row("LR",model)}')
+f.close()
 
     
 
