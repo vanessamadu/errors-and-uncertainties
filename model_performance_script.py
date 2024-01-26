@@ -32,16 +32,16 @@ def results_row(model_type,model):
     err2 = SEMs(preds,obs)
     err3 = AOEMs(preds,obs)
 
-    err1_summary = err1.error_summary
-    err2_summary = err2.error_summary
-    #err3_summary = err3.error_summary
-
     result_row = {"Model":model_type,"Model Details":model_info(model_type),
                   "RMSE":err1.error, "RMSE std":err1.uncertainty,
                   "MAE":err2.mae_speed.error, "MAE std":err2.mae_speed.uncertainty,
                   "MAE Over":err2.ma_overestimated_e.error, "MAE Over std":err2.ma_overestimated_e.uncertainty,
                   "MAE Under":err2.ma_underestimated_e.error, "MAE Under std":err2.ma_underestimated_e.uncertainty,
                   "Over/Under/Correct Speed": err2.over_under_correct_proportions,
+                  "MAAO":err3.maao_all.error, "MAAO std":err3.maao_all.uncertainty,
+                  "MAAO AC": err3.maao_anticlockwise.error, "MAAO AC std": err3.maao_anticlockwise.uncertainty,
+                  "MAAO C": err3.maao_clockwise.error, "MAAO C std": err3.maao_clockwise.uncertainty,
+                  "AC/C/None/Undefined":err3.clockwise_anticlockwise_no_undefined_proportions
                   }
     return result_row
 
