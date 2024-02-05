@@ -25,7 +25,7 @@ class SBRModel(Model):
     @staticmethod
     def sbr(lon:float,lat:float,f0:float):
         __class__.check_coordinates(lon,lat)
-        return np.array([-f0*lat,f0*lon])
+        return np.array([-f0*(lat+42),f0*(lon-30)])
 
     @property
     def f0(self):
