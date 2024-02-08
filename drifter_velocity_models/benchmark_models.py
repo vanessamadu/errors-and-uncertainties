@@ -20,7 +20,7 @@ class SBRModel(Model):
 
     def __init__(self,data):
         super().__init__(data)
-        self.f0 = 7.27e-5 # coriolis parameter at 30 degrees N
+        self.f0 = 7.27e-4 # coriolis parameter at 30 degrees N
 
     @staticmethod
     def sbr(lon:float,lat:float,f0:float):

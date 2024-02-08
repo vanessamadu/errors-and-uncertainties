@@ -5,7 +5,7 @@ import os
 drifter_velocity_models_dir = (os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 + '/drifter_velocity_models')
 sys.path.append(drifter_velocity_models_dir)
-from drifter_velocity_models.linear_regression_model import LinearRegressionModel as m
+from drifter_velocity_models.benchmark_models import SBRModel as m
 from rmse_class import RMSE
 from sems_class import SEMs
 from aoems_class import AOEMs
@@ -13,7 +13,7 @@ from aoems_class import AOEMs
 data = pd.read_hdf("./drifter_velocity_models/ocean_data.h5")
 covs = ['u_av','v_av','lat','lon','Tx','Ty','Wx','Wy','t']
 
-model = m(data,covs)
+model = m(data)
 
 def model_info(model_type):
 # for linear regression models
@@ -45,9 +45,9 @@ def results_row(model_type,model):
                   }
     return result_row
 
-name = "L1.txt"
+name = "SBR.txt"
 f = open(name,"w")
-f.write(f'{results_row("LR",model)}')
+f.write(f'{results_row("SBR",model)}')
 f.close()
 
     
